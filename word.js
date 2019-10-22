@@ -1,27 +1,46 @@
 var stuff = require('./letter.js')
 
 function Word(word){
-    var alpha = 'abcdefghijklmnopqrstuvwxyz';
+    
     this.letters=[];
     for(i in word){
+        if('abcdefghijklmnopqrstuvwxyz'.indexOf(word[i].toLowerCase())!=-1){
         this.letters.push(new stuff.Letter(word[i]))
+        }
+        else{
+            this.letters.push(word[i])
+        }
     }
 
-    this.showWord = function(){
+    this.toString = function(){
         var theWord = '';
         for(i in this.letters){
-            if(this.letters[i].beenGuessed){
-                theWord+=this.letters[i].letter+' '
+            if('abcdefghijklmnopqrstuvwxyz'.indexOf(word[i].toLowerCase())!=-1){
+                if(this.letters[i].beenGuessed){
+                    theWord+=this.letters[i].letter+' '
+                }
+                else{
+                    theWord+='_'+' ';
+                }
             }
             else{
-                theWord+='_'+' ';
+                theWord+=word[i];
             }
         }
-        return theWord;
+        return console.log('\n'+theWord+'\n');
     }
     this.guessLetter = function(guess){
+        letterFound=false;
         for(i in this.letters){
-            this.letters[i].tryGuess(guess);
+            if('abcdefghijklmnopqrstuvwxyz'.indexOf(word[i].toLowerCase())!=-1){
+                if(this.letters[i].tryGuess(guess)){
+                    letterFound=true;
+                }
+            }
         }
+        return letterFound;
     }
+}
+module.exports = {
+    Word:Word
 }
